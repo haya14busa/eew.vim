@@ -29,6 +29,10 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
+let s:V = vital#of('eew')
+let s:HTTP = s:V.import('Web.HTTP')
+let s:JSON = s:V.import('Web.JSON')
+echo s:JSON
 
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo
