@@ -37,7 +37,6 @@ let g:eew#epsp#debug = get(g:, 'eew#epsp#debug', s:FALSE)
 
 let s:base_url = 'http://api.p2pquake.net/userquake'
 let s:HTTP = eew#http()
-let s:JSON = eew#json()
 
 function! eew#epsp#fetch()
     let date = strftime('%m/%d')
