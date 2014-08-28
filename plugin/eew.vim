@@ -40,6 +40,10 @@ set cpo&vim
 " }}}
 
 
+augroup eew-epsp
+    autocmd!
+    autocmd CursorHold * call eew#epsp#notify()
+augroup END
 
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo
