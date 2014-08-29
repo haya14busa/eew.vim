@@ -82,7 +82,8 @@ call eew#epsp#prefetch()
 function! eew#epsp#notify()
     let new_data = eew#epsp#fetch()
 
-    if (exists('s:prev_data') && s:prev_data != new_data) || g:eew#epsp#debug == s:TRUE
+    if (exists('s:prev_data') && s:prev_data != new_data && !empty(s:new_data))
+    \ || g:eew#epsp#debug == s:TRUE
         let e = new_data[0].info
         echom printf('地震速報: %s頃, %sで震度%sの地震が発生しました'
         \            , e.date, e.focus, e.intensity)
