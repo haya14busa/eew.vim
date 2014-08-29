@@ -41,8 +41,8 @@ let s:HTTP = eew#http()
 function! eew#epsp#fetch()
     let date = strftime('%m/%d')
     let url = s:base_url . '?date=' . date
-    let request = s:HTTP.get(url)
-    let split_data = filter(map(split(iconv(request.content, 'shift-jis', &encoding), '\n'), "
+    let response = s:HTTP.get(url)
+    let split_data = filter(map(split(iconv(response.content, 'shift-jis', &encoding), '\n'), "
     \   split(substitute(v:val, '\r', '', ''), ',')
     \ "), 'v:val[1] ==# ''QUA''')
     " select only code ==# 'QUA'
