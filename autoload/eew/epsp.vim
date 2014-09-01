@@ -38,11 +38,8 @@ let g:eew#epsp#debug = get(g:, 'eew#epsp#debug', s:FALSE)
 let s:base_url = 'http://api.p2pquake.net/userquake'
 let s:HTTP = eew#http()
 
-function! eew#epsp#fetch()
-    let date = strftime('%m/%d')
-    let url = s:base_url . '?date=' . date
-    let response = s:HTTP.get(url)
-    let split_data = filter(map(split(iconv(response.content, 'cp932', &encoding), '\r\n'), "
+function! eew#epsp#parse(raw_data)
+    let split_data = filter(map(split(iconv(a:raw_data, 'cp932', &encoding), '\r\n'), "
     \   split(v:val, ',')
     \ "), 'v:val[1] ==# ''QUA''')
     " select only code ==# 'QUA'
@@ -66,12 +63,19 @@ function! eew#epsp#fetch()
 
     let result = map(split_data, "
     \   {
-    \    'time': v:val[0],
-    \    'code': v:val[1],
-    \    'info': infos[index(split_data, v:val)]
+    \      'time': v:val[0],
+    \    , 'code': v:val[1],
+    \    , 'info': infos[index(split_data, v:val)]
     \   }
     \ ")
     return result
+endfunction
+
+function! eew#epsp#fetch()
+    let date = strftime('%m/%d')
+    let url = s:base_url . '?date=' . date
+    let response = s:HTTP.get(url)
+    return eew#epsp#parse(response.content)
 endfunction
 
 function! eew#epsp#prefetch()
@@ -83,7 +87,7 @@ function! eew#epsp#notify()
     let new_data = eew#epsp#fetch()
 
     if (exists('s:prev_data') && s:prev_data != new_data && !empty(new_data))
-    \ || g:eew#epsp#debug == s:TRUE
+    \ || (g:eew#epsp#debug == s:TRUE && !empty(new_data))
         let e = new_data[0].info
         echom printf('地震速報: %s頃, %sで震度%sの地震が発生しました'
         \            , e.date, e.focus, e.intensity)
