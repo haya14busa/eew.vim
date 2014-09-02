@@ -63,8 +63,8 @@ function! eew#epsp#parse(raw_data)
 
     let result = map(split_data, "
     \   {
-    \      'time': v:val[0],
-    \    , 'code': v:val[1],
+    \      'time': v:val[0]
+    \    , 'code': v:val[1]
     \    , 'info': infos[index(split_data, v:val)]
     \   }
     \ ")
