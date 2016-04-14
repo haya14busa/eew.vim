@@ -83,14 +83,26 @@ function! eew#epsp#prefetch()
 endfunction
 call eew#epsp#prefetch()
 
+function! s:latest(data) abort
+    if !empty(a:data)
+        let e = a:data[-1].info
+        return printf('地震速報: %s頃, %sで震度%sの地震が発生しました'
+        \            , e.date, e.focus, e.intensity)
+    endif
+    return ''
+endfunction
+
+function! eew#epsp#latest() abort
+    let data = eew#epsp#fetch()
+    echom s:latest(data)
+endfunction
+
 function! eew#epsp#notify()
     let new_data = eew#epsp#fetch()
 
     if (exists('s:prev_data') && s:prev_data != new_data && !empty(new_data))
     \ || (g:eew#epsp#debug == s:TRUE && !empty(new_data))
-        let e = new_data[-1].info
-        echom printf('地震速報: %s頃, %sで震度%sの地震が発生しました'
-        \            , e.date, e.focus, e.intensity)
+        echom s:latest(new_data)
     endif
 
     let s:prev_data = new_data
