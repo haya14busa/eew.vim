@@ -88,7 +88,7 @@ function! eew#epsp#notify()
 
     if (exists('s:prev_data') && s:prev_data != new_data && !empty(new_data))
     \ || (g:eew#epsp#debug == s:TRUE && !empty(new_data))
-        let e = new_data[0].info
+        let e = new_data[-1].info
         echom printf('地震速報: %s頃, %sで震度%sの地震が発生しました'
         \            , e.date, e.focus, e.intensity)
     endif
