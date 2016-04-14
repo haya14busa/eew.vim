@@ -101,7 +101,16 @@ function! eew#epsp#notify_for_timer(timerid)
 endfunction
 
 function! eew#epsp#enable()
-    call timer_start(30000, 'eew#epsp#notify_for_timer', {'repeat': -1})
+    if !exists('s:timerid')
+        let s:timerid = timer_start(30000, 'eew#epsp#notify_for_timer', {'repeat': -1})
+    endif
+endfunction
+
+function! eew#epsp#disable()
+    if exists('s:timerid')
+        call timer_stop(s:timerid)
+        unlet s:timerid
+    endif
 endfunction
 
 
