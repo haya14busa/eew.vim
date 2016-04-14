@@ -96,6 +96,14 @@ function! eew#epsp#notify()
     let s:prev_data = new_data
 endfunction
 
+function! eew#epsp#notify_for_timer(timerid)
+    return eew#epsp#notify()
+endfunction
+
+function! eew#epsp#enable()
+    call timer_start(30000, 'eew#epsp#notify_for_timer', {'repeat': -1})
+endfunction
+
 
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo
